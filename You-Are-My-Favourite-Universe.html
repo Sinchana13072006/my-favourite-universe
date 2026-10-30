@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080b20">
+<title>You Are My Favourite Universe</title>
+<style>
+:root {
+  --site-primary: #171b3b;
+  --site-secondary: #4b315e;
+  --site-background: #080b20;
+  --site-on-primary: #fff8ec;
+  --site-on-secondary: #fff5e8;
+  --site-on-background: #f7f1ff;
+  --site-font-body: Georgia, 'Times New Roman', serif;
+  --site-font-heading: 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; background: #080b20; }
+body { color: var(--site-on-background); font-family: var(--site-font-body); overflow-x: hidden; }
+button, input, textarea { font: inherit; }
+button { cursor: pointer; }
+#app { min-height: 100vh; width: 100%; border-radius: 0; position: relative; overflow: hidden; background-color: var(--site-background); color: var(--site-on-background); isolation: isolate; }
+#app:before { content: ''; position: fixed; inset: 0; z-index: -2; background: radial-gradient(ellipse at 50% 48%, #29234e 0%, #10142f 38%, #080b20 76%); }
+#starfield { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: var(--site-decoration-opacity); }
+.star { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff8df; box-shadow: 0 0 7px 2px #d8c8ff88; animation: twinkle var(--dur, 4s) ease-in-out infinite alternate; }
+@keyframes twinkle { from { opacity: .22; transform: scale(.7); } to { opacity: 1; transform: scale(1.5); } }
+.shooting { position: fixed; width: 120px; height: 1px; background: linear-gradient(90deg, #fff, transparent); transform: rotate(-35deg); opacity: 0; animation: shoot 8s linear infinite; pointer-events: none; }
+@keyframes shoot { 0%, 72% { opacity: 0; transform: translate(0,0) rotate(-35deg); } 74% { opacity: .9; } 82% { opacity: 0; transform: translate(-260px,170px) rotate(-35deg); } 100% { opacity: 0; } }
+.slide { min-height: 100svh; width: 100%; display: none; position: relative; padding: clamp(22px, 5vw, 64px); animation: appear .9s ease both; }
+.slide.active { display: flex; }
+@keyframes appear { from { opacity: 0; transform: translateY(12px) scale(.99); } to { opacity: 1; transform: none; } }
+#slide1 { align-items: center; justify-content: center; text-align: center; }
+.hero { width: min(900px, 100%); position: relative; z-index: 2; padding: 34px 10px 20px; }
+.moon { position: absolute; width: clamp(115px, 22vw, 245px); aspect-ratio: 1; border-radius: 50%; right: clamp(3%, 10vw, 150px); top: clamp(4%, 9vh, 95px); background: radial-gradient(circle at 32% 30%, #fffdf1, #d9d4d0 33%, #9a9bb1 67%, #44445f 100%); box-shadow: 0 0 40px #d7d5e766, 0 0 100px #b6a7e52a; opacity: .84; animation: moonrise 4s ease both; }
+.moon:after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 65% 58%, #68687d22 0 7%, transparent 8%), radial-gradient(circle at 35% 66%, #66677b22 0 5%, transparent 6%), radial-gradient(circle at 60% 25%, #66677b22 0 4%, transparent 5%); }
+@keyframes moonrise { from { opacity: 0; transform: translateY(35px); } to { opacity: .84; transform: none; } }
+.star-core { width: clamp(70px, 12vw, 118px); aspect-ratio: 1; margin: 0 auto 28px; position: relative; border-radius: 50%; background: radial-gradient(circle, #fff 0 7%, #fff4c2 10%, #f4c96e 22%, #d59a45 33%, transparent 68%); filter: drop-shadow(0 0 22px #ffda8c) drop-shadow(0 0 70px #e4b75c); animation: pulse 3s ease-in-out infinite; }
+.star-core:before, .star-core:after { content: ''; position: absolute; inset: 12%; background: #fff5cb; clip-path: polygon(50% 0, 58% 42%, 100% 50%, 58% 58%, 50% 100%, 42% 58%, 0 50%, 42% 42%); filter: blur(2px); }
+.star-core:after { transform: rotate(45deg) scale(.7); opacity: .55; }
+@keyframes pulse { 0%,100% { transform: scale(.92); opacity: .8; } 50% { transform: scale(1.12); opacity: 1; } }
+.eyebrow { text-transform: uppercase; letter-spacing: .28em; font: 11px Arial, sans-serif; color: #e4c98c; }
+h1,h2,h3 { font-family: var(--site-font-heading); font-weight: 400; }
+.hero h1 { font-size: clamp(34px, 6vw, 68px); line-height: 1.06; margin: 14px 0 25px; color: #fff4d9; text-shadow: 0 0 25px #f5d58b55; }
+.hero-copy { max-width: 760px; margin: auto; color: #e5e0f0; font-size: clamp(15px, 1.55vw, 18px); line-height: 1.82; white-space: pre-line; text-shadow: 0 2px 14px #080b20; }
+.hero-copy .highlight { color: #f6d99b; }
+.bottom-note { margin: 32px 0 16px; color: #c7b9d9; font-style: italic; letter-spacing: .05em; }
+.gold-btn, .ghost-btn { border: 1px solid #d7b66e99; border-radius: 999px; padding: 14px 25px; color: #fff4d9; background: linear-gradient(120deg, #70502d88, #362747bb); letter-spacing: .12em; font: 11px Arial, sans-serif; box-shadow: 0 0 24px #d8ae5c20; transition: .25s ease; }
+.gold-btn:hover, .ghost-btn:hover { transform: translateY(-2px); box-shadow: 0 0 28px #d8ae5c66; border-color: #f4d58c; }
+.ghost-btn { background: #17162b99; border-color: #b8a9d455; letter-spacing: .08em; }
+.nav { position: absolute; bottom: 22px; left: 0; right: 0; display: flex; justify-content: center; gap: 12px; align-items: center; z-index: 5; }
+.nav button { font-size: 10px; padding: 10px 17px; }
+.slide-label { position: absolute; top: 26px; left: 30px; color: #b9a9cc; font: 10px Arial,sans-serif; letter-spacing: .2em; }
+#slide2 { flex-direction: column; align-items: center; padding-top: clamp(70px, 10vh, 105px); padding-bottom: 90px; }
+.section-head { text-align: center; max-width: 780px; margin-bottom: 36px; }
+.section-head h2 { font-size: clamp(32px, 5vw, 54px); color: #fff0d0; margin: 12px 0; }
+.section-head p { color: #c9c1d9; line-height: 1.7; font-size: 16px; }
+.envelopes { width: min(1000px, 100%); display: grid; grid-template-columns: repeat(4, 1fr); gap: 17px; }
+.envelope { min-height: 160px; border: 1px solid #d9c38b55; border-radius: 16px; background: linear-gradient(145deg, #282347bb, #11162dcc); position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 12px; padding: 18px 12px; color: #f5e9d4; transition: .3s; box-shadow: inset 0 0 28px #c1a6ff0a, 0 10px 30px #0003; }
+.envelope:before { content: '✉'; font-size: 38px; color: #e9ca88; text-shadow: 0 0 18px #e7c77b88; transition: .35s; }
+.envelope:after { content: ''; position: absolute; width: 140%; height: 1px; background: #e9d7a655; transform: rotate(34deg); top: 55%; left: -20%; }
+.envelope span { font-size: 14px; text-align: center; position: relative; z-index: 1; }
+.envelope small { font: 9px Arial,sans-serif; letter-spacing: .15em; color: #b7a8ce; text-transform: uppercase; }
+.envelope:hover { transform: translateY(-6px); border-color: #f0d28e; box-shadow: 0 0 30px #d4b56d25; }
+.envelope:hover:before { transform: translateY(-4px) scale(1.1); }
+#slide3 { align-items: center; justify-content: center; text-align: center; flex-direction: column; padding-bottom: 90px; }
+#slide3 h2 { font-size: clamp(48px, 10vw, 100px); margin: 0 0 18px; letter-spacing: .18em; color: #ffe9b8; text-shadow: 0 0 22px #f0c66c, 0 0 60px #d4a64d88; }
+.constellation { position: absolute; width: min(440px, 75vw); height: 280px; top: 10%; right: 5%; opacity: .42; pointer-events: none; }
+.photo-frame { width: min(330px, 72vw); aspect-ratio: 4 / 4.6; padding: 10px; border: 1px solid #e4c98799; border-radius: 48% 48% 18px 18px; background: linear-gradient(145deg, #e7c98122, #1b1835); box-shadow: 0 0 38px #e0bd6940, inset 0 0 25px #fff2; position: relative; overflow: hidden; margin: 0 auto 24px; }
+.photo-frame img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; display: none; }
+.photo-frame .photo-empty { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 12px; color: #d7c8e3; font-size: 13px; }
+.photo-empty b { font-size: 38px; color: #e8ca87; font-weight: 400; }
+.final-copy { max-width: 660px; white-space: pre-line; line-height: 1.75; color: #e6dfee; font-size: 16px; margin: 0 auto 22px; }
+.heart-sky { position: absolute; bottom: 12%; left: 10%; color: #f3d28c88; font-size: 80px; transform: rotate(-15deg); text-shadow: 0 0 30px #e6bb6a; opacity: .3; }
+.modal-backdrop { position: fixed; inset: 0; z-index: 20; background: #050713dd; backdrop-filter: blur(12px); display: none; align-items: center; justify-content: center; padding: 18px; }
+.modal-backdrop.show { display: flex; animation: appear .35s ease; }
+.letter-modal { width: min(760px, 100%); max-height: 92svh; overflow-y: auto; border: 1px solid #d7bd7b88; border-radius: 20px; background: linear-gradient(145deg, #24203f, #10162d); box-shadow: 0 0 70px #d2ae6240; padding: clamp(20px, 4vw, 38px); position: relative; }
+.letter-modal h3 { font-size: clamp(27px, 5vw, 40px); color: #f7dfaa; margin: 0 35px 18px 0; }
+.close { position: absolute; top: 14px; right: 17px; border: 0; background: transparent; color: #eee1ce; font-size: 27px; }
+.letter-photo { width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px; display: none; margin: 12px 0 18px; }
+.letter-body { white-space: pre-wrap; line-height: 1.85; color: #e9e0ed; font-size: 16px; }
+.admin-panel { display: none; position: fixed; z-index: 30; inset: 0; background: #070918f5; backdrop-filter: blur(16px); overflow-y: auto; padding: 25px; }
+.admin-panel.show { display: block; }
+.admin-wrap { max-width: 900px; margin: 20px auto; border: 1px solid #bda66c66; border-radius: 18px; padding: clamp(18px, 4vw, 34px); background: #171831; }
+.admin-wrap h2 { color: #f3d99f; font-size: 36px; margin: 0 0 8px; }
+.admin-wrap p, .hint { color: #bdb4d0; line-height: 1.6; font-size: 13px; }
+.admin-wrap label { display: block; color: #e6d6b6; font: 11px Arial,sans-serif; letter-spacing: .08em; margin: 15px 0 7px; }
+.admin-wrap input, .admin-wrap textarea, .admin-wrap select { width: 100%; border: 1px solid #a999c455; border-radius: 9px; padding: 12px; background: #0d1127; color: #fff; outline: none; }
+.admin-wrap textarea { min-height: 140px; resize: vertical; line-height: 1.6; }
+.admin-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.admin-actions button { padding: 11px 16px; }
+.preview-box { border: 1px dashed #c8ad6a66; border-radius: 12px; padding: 16px; margin-top: 16px; color: #d8cfe2; white-space: pre-wrap; line-height: 1.7; }
+.admin-launch { position: fixed; z-index: 8; right: 14px; top: 14px; border: 1px solid #bba66b55; color: #cfc2a2; background: #10142caa; border-radius: 20px; padding: 7px 11px; font: 9px Arial,sans-serif; letter-spacing: .1em; opacity: .55; }
+.music { position: fixed; z-index: 8; left: 14px; top: 14px; border: 1px solid #bba66b55; color: #e8d7b4; background: #10142caa; border-radius: 20px; padding: 8px 12px; font: 10px Arial,sans-serif; }
+.wish-overlay { position: fixed; inset: 0; z-index: 40; display: none; align-items: center; justify-content: center; text-align: center; padding: 25px; background: radial-gradient(ellipse, #382b58, #090d22 68%); }
+.wish-overlay.show { display: flex; animation: appear 1s ease; }
+.wish-text { max-width: 780px; font-size: clamp(27px, 5vw, 52px); line-height: 1.35; color: #ffe8b4; text-shadow: 0 0 24px #e5bc6d; }
+.wish-heart { position: absolute; color: #f2c7ce; animation: floatup 5s ease-in infinite; opacity: 0; }
+@keyframes floatup { 0% { transform: translateY(20px) scale(.5); opacity: 0; } 20% { opacity: .9; } 100% { transform: translateY(-90vh) scale(1.3); opacity: 0; } }
+@media (max-width: 760px) { .envelopes { grid-template-columns: repeat(2, 1fr); gap: 11px; } .envelope { min-height: 135px; } .moon { right: -18px; top: 5%; opacity: .48; } .hero { padding-top: 100px; } .hero-copy { font-size: 15px; line-height: 1.68; } .nav { bottom: 12px; } .slide-label { top: 18px; left: 18px; } }
+@media (prefers-reduced-motion: reduce) { *, *:before, *:after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="starfield" aria-hidden="true"></div>
+  <div class="shooting" style="top:18%;left:76%;animation-delay:2s"></div>
+  <div class="shooting" style="top:64%;left:38%;animation-delay:5s"></div>
+  <button class="music" id="musicBtn" type="button">♫ MUSIC: OFF</button>
+  <button class="admin-launch" id="adminLaunch" type="button">ADMIN</button>
+
+  <section class="slide active" id="slide1">
+    <div class="moon" aria-hidden="true"></div>
+    <div class="hero">
+      <div class="eyebrow">A little wish from my universe</div>
+      <div class="star-core" aria-hidden="true"></div>
+      <h1>You Are My Favourite Universe <span style="color:#f0cf82">✧</span></h1>
+      <div class="hero-copy" id="openingCopy">Out of billions of stars in this endless universe, somehow, one of the brightest lights found its way into my little world.
+
+And that light was you.
+
+Just like this star, you entered my life quietly, but changed the way everything felt. You brought brightness to my ordinary days, warmth to my silences, and a kind of happiness I cannot always explain in words.
+
+If the universe is endless, then so are the reasons you are special to me.
+
+You are not just a star in my sky.
+You are the little universe that makes my world beautiful.
+
+And today, I wish the universe gives back all the light and happiness you have unknowingly brought into my life.
+
+Happy Birthday, my favourite star. ✨</div>
+      <div class="bottom-note">Your universe has more surprises waiting...</div>
+      <button class="gold-btn" type="button" onclick="goTo(2)">ENTER MY LITTLE UNIVERSE →</button>
+    </div>
+    <div class="nav"><span class="eyebrow">01 — HIS LITTLE STAR</span></div>
+  </section>
+
+  <section class="slide" id="slide2">
+    <div class="slide-label">02 — LETTERS FROM DIFFERENT MOMENTS</div>
+    <div class="section-head">
+      <div class="eyebrow">Open whenever your heart needs a little light</div>
+      <h2>Little Letters, For Different Versions of You</h2>
+      <p>Because I cannot be beside you in every moment, I want these words to find you whenever you need them.</p>
+    </div>
+    <div class="envelopes" id="envelopes"></div>
+    <div class="nav"><button class="ghost-btn" onclick="goTo(1)">← BACK TO THE STAR</button><button class="gold-btn" onclick="goTo(3)">FOLLOW THE STARS →</button></div>
+  </section>
+
+  <section class="slide" id="slide3">
+    <svg class="constellation" viewBox="0 0 440 280" aria-hidden="true"><g fill="none" stroke="#e9d39b" stroke-width="1.2"><path d="M60 60 L130 28 L205 75 L270 35 L345 80 L380 155 L300 190 L235 145 L160 205 L85 160 Z"/><path d="M205 75 L235 145 L300 190"/></g><g fill="#fff0bd"><circle cx="60" cy="60" r="3"/><circle cx="130" cy="28" r="3"/><circle cx="205" cy="75" r="4"/><circle cx="270" cy="35" r="3"/><circle cx="345" cy="80" r="3"/><circle cx="380" cy="155" r="3"/><circle cx="300" cy="190" r="3"/><circle cx="235" cy="145" r="3"/><circle cx="160" cy="205" r="3"/><circle cx="85" cy="160" r="3"/></g></svg>
+    <div class="moon" style="width:clamp(100px,17vw,190px);right:8%;top:7%;opacity:.48"></div>
+    <div class="heart-sky">♡</div>
+    <div class="eyebrow">The brightest part of my sky</div>
+    <h2>HUBBY</h2>
+    <div class="photo-frame" id="mainPhotoFrame"><img id="mainPhoto" alt="A special photograph"><div class="photo-empty" id="mainPhotoEmpty"><b>✧</b><span>Your favourite face belongs here</span></div></div>
+    <div class="final-copy" id="finalCopy">If I could choose one beautiful place in this endless universe, I would still choose the little world where I found you.
+
+You are one of my favourite reasons to smile, one of my most precious thoughts, and someone I hope life treats with endless kindness.
+
+No matter how many stars fill the sky, you will always have a special place in my universe.
+
+Happy Birthday. ❤️</div>
+    <button class="gold-btn" onclick="showWish()">ONE LAST WISH FOR YOU ✨</button>
+    <div class="nav"><button class="ghost-btn" onclick="goTo(2)">← BACK TO THE LETTERS</button></div>
+  </section>
+</div>
+
+<div class="modal-backdrop" id="letterModal" role="dialog" aria-modal="true" aria-labelledby="letterTitle"><div class="letter-modal"><button class="close" onclick="closeLetter()" aria-label="Close">×</button><div class="eyebrow">A little light, written just for you</div><h3 id="letterTitle"></h3><img class="letter-photo" id="letterPhoto" alt="Personal memory"><div class="letter-body" id="letterBody"></div><div style="text-align:right;color:#e7c77e;margin-top:20px">with all my starlight ✦</div></div></div>
+
+<div class="admin-panel" id="adminPanel"><div class="admin-wrap">
+  <button class="close" onclick="closeAdmin()" aria-label="Close editor">×</button>
+  <div class="eyebrow">Private creator space</div><h2>Universe Control Room</h2>
+  <p>Edit the letters, add photographs, and personalise the final page. Changes are saved in this browser on this device. This preview does not include secure accounts or cloud sync.</p>
+  <div id="adminLogin"><label for="adminPin">ADMIN PASSCODE</label><input id="adminPin" type="password" placeholder="Enter passcode"><div class="hint">Preview passcode: <b>starlight</b>. Change this in the HTML before sharing; this client-side gate is not secure authentication.</div><div class="admin-actions"><button class="gold-btn" onclick="unlockAdmin()">UNLOCK EDIT MODE</button></div></div>
+  <div id="adminEditor" style="display:none">
+    <label for="editTarget">WHAT WOULD YOU LIKE TO EDIT?</label><select id="editTarget" onchange="loadEditor()"><option value="opening">Slide 1 — Opening message</option><option value="letter-0">Letter — Open when you're sad</option><option value="letter-1">Letter — Open when you're happy</option><option value="letter-2">Letter — Open when you miss me</option><option value="letter-3">Letter — Open when you feel alone</option><option value="letter-4">Letter — Open when you need motivation</option><option value="letter-5">Letter — Open when you cannot sleep</option><option value="letter-6">Letter — Open when you doubt yourself</option><option value="letter-7">Letter — A day you need to feel special</option><option value="final">Slide 3 — HUBBY message</option></select>
+    <label for="editTitle">TITLE</label><input id="editTitle" type="text" placeholder="Letter title">
+    <label for="editMessage">MESSAGE</label><textarea id="editMessage" placeholder="Write from your heart..."></textarea>
+    <label for="editPhoto">PHOTOGRAPH (OPTIONAL)</label><input id="editPhoto" type="file" accept="image/*"><div class="hint" id="photoHint">Choose a photo for this letter or the final HUBBY page. Large photos may exceed browser storage limits.</div>
+    <div class="admin-actions"><button class="gold-btn" onclick="previewEdit()">PREVIEW</button><button class="gold-btn" onclick="saveEdit()">SAVE THIS CHANGE</button><button class="ghost-btn" onclick="exportBackup()">EXPORT BACKUP</button><button class="ghost-btn" onclick="document.getElementById('importBackup').click()">IMPORT BACKUP</button><button class="ghost-btn" onclick="resetSite()">RESET DEFAULTS</button><input id="importBackup" type="file" accept="application/json" hidden onchange="importBackup(event)"></div>
+    <div class="preview-box" id="editPreview">Your preview will appear here.</div>
+    <p class="hint">Tip: Export a backup after editing. For a real public website with private admin access, persistent photos across devices, and a shareable URL, deploy this site with a backend (for example, Supabase or Firebase) and proper authentication/storage.</p>
+  </div>
+</div></div>
+<div class="wish-overlay" id="wishOverlay"><div class="wish-text">May your life always be as beautiful as the universe you deserve.<br><span style="font-size:.78em">Keep shining, my favourite human. ❤️</span><div style="margin-top:32px"><button class="ghost-btn" onclick="closeWish()">RETURN TO MY UNIVERSE</button></div></div></div>
+
+<script>
+const defaults = {
+  opening: `Out of billions of stars in this endless universe, somehow, one of the brightest lights found its way into my little world.\n\nAnd that light was you.\n\nJust like this star, you entered my life quietly, but changed the way everything felt. You brought brightness to my ordinary days, warmth to my silences, and a kind of happiness I cannot always explain in words.\n\nIf the universe is endless, then so are the reasons you are special to me.\n\nYou are not just a star in my sky.\nYou are the little universe that makes my world beautiful.\n\nAnd today, I wish the universe gives back all the light and happiness you have unknowingly brought into my life.\n\nHappy Birthday, my favourite star. ✨`,
+  final: `If I could choose one beautiful place in this endless universe, I would still choose the little world where I found you.\n\nYou are one of my favourite reasons to smile, one of my most precious thoughts, and someone I hope life treats with endless kindness.\n\nNo matter how many stars fill the sky, you will always have a special place in my universe.\n\nHappy Birthday. ❤️`,
+  letters: [
+    {title:"Open when you're sad", message:"Hey, my favourite human. I wish I could sit beside you right now and make the world feel a little softer. You do not have to pretend to be okay every minute. Take your time, breathe, and remember that one difficult day does not make your whole story difficult. You deserve gentleness, especially from yourself. I'm sending you the biggest invisible hug. ❤️", photo:""},
+    {title:"Open when you're happy", message:"I hope you pause for a second and let yourself enjoy this happiness fully. You deserve every little reason to smile, every beautiful surprise, and every moment that makes your heart feel light. If I could, I would bottle this exact feeling so you could keep it forever. Keep glowing. ✨", photo:""},
+    {title:"Open when you miss me", message:"Maybe we're not in the same place at this moment, but I hope you know that distance cannot make a meaningful connection feel smaller. Look up at the sky for a second. Somewhere under these same stars, someone is thinking of you and wishing you a beautiful day. Consider this letter a little hug until the next one. 💌", photo:""},
+    {title:"Open when you feel alone", message:"You are not forgotten, and you are never less important just because a moment feels quiet. Even the brightest stars have stretches of darkness around them, but that never takes away their light. You matter more than you know. Please give yourself the same kindness you so easily give to others. ❤️", photo:""},
+    {title:"Open when you need motivation", message:"Look how far you've already come. You have made it through days you once thought would be too hard, and that is proof of your strength. You do not need to have everything figured out today. Just take the next small step. I believe in the person you are becoming. Keep going, one star at a time. ✨", photo:""},
+    {title:"Open when you cannot sleep", message:"Let the day go for now. You do not have to solve every problem tonight or carry tomorrow before it arrives. Imagine the quietest sky, a soft moon, and every star reminding you to rest. Close your eyes, breathe slowly, and let yourself have a peaceful night. Sweet dreams, my favourite universe. 🌙", photo:""},
+    {title:"Open when you doubt yourself", message:"Please don't let one uncertain moment make you question all the wonderful things about yourself. You are capable, worthy, and so much more than your mistakes or worries. I wish you could see yourself through the kind eyes of the people who care about you. Trust your light. It has brought you this far. ❤️", photo:""},
+    {title:"A day you need to feel special", message:"This is your reminder that you are someone's favourite notification, favourite thought, and favourite little plot twist. The universe is huge, but there is only one you. I hope today gives you a hundred reasons to smile and reminds you how deeply you deserve to be celebrated. Happy being you. ✨", photo:""}
+  ], mainPhoto:""
+};
+const letterLabels = ["Open when you're sad","Open when you're happy","Open when you miss me","Open when you feel alone","Open when you need motivation","Open when you cannot sleep","Open when you doubt yourself","A day you need to feel special"];
+let data = loadData();
+function loadData(){ try { const saved=localStorage.getItem('favouriteUniverseData'); return saved ? mergeData(JSON.parse(saved)) : structuredClone(defaults); } catch(e) { return structuredClone(defaults); } }
+function mergeData(saved){ const d=structuredClone(defaults); if(saved.opening) d.opening=saved.opening; if(saved.final) d.final=saved.final; if(Array.isArray(saved.letters)) d.letters=d.letters.map((x,i)=>({...x,...(saved.letters[i]||{})})); if(saved.mainPhoto) d.mainPhoto=saved.mainPhoto; return d; }
+function persist(){ try { localStorage.setItem('favouriteUniverseData', JSON.stringify(data)); return true; } catch(e) { alert('Your browser could not save this change. Try a smaller photograph or export a backup.'); return false; } }
+function goTo(n){ document.querySelectorAll('.slide').forEach(s=>s.classList.remove('active')); document.getElementById('slide'+n).classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
+function render(){ document.getElementById('openingCopy').textContent=data.opening; document.getElementById('finalCopy').textContent=data.final; const grid=document.getElementById('envelopes'); grid.innerHTML=''; data.letters.forEach((l,i)=>{ const b=document.createElement('button'); b.className='envelope'; b.type='button'; b.innerHTML=`<span></span><small>sealed with starlight</small>`; b.querySelector('span').textContent=l.title; b.addEventListener('click',()=>openLetter(i)); grid.appendChild(b); }); const img=document.getElementById('mainPhoto'); const empty=document.getElementById('mainPhotoEmpty'); if(data.mainPhoto){img.src=data.mainPhoto;img.style.display='block';empty.style.display='none';}else{img.removeAttribute('src');img.style.display='none';empty.style.display='flex';} }
+function openLetter(i){ const l=data.letters[i]; document.getElementById('letterTitle').textContent=l.title; document.getElementById('letterBody').textContent=l.message; const p=document.getElementById('letterPhoto'); if(l.photo){p.src=l.photo;p.style.display='block';}else{p.removeAttribute('src');p.style.display='none';} document.getElementById('letterModal').classList.add('show'); }
+function closeLetter(){document.getElementById('letterModal').classList.remove('show');}
+document.getElementById('letterModal').addEventListener('click',e=>{if(e.target.id==='letterModal')closeLetter();});
+function closeAdmin(){document.getElementById('adminPanel').classList.remove('show');}
+document.getElementById('adminLaunch').addEventListener('click',()=>{document.getElementById('adminPanel').classList.add('show');});
+function unlockAdmin(){ if(document.getElementById('adminPin').value==='starlight'){document.getElementById('adminLogin').style.display='none';document.getElementById('adminEditor').style.display='block';loadEditor();}else alert('That passcode is not correct.'); }
+function loadEditor(){ const t=document.getElementById('editTarget').value; let title='',msg='',photo=''; if(t==='opening')msg=data.opening; else if(t==='final')msg=data.final; else {const l=data.letters[Number(t.split('-')[1])];title=l.title;msg=l.message;photo=l.photo;} document.getElementById('editTitle').value=title; document.getElementById('editTitle').disabled=(t==='opening'||t==='final'); document.getElementById('editMessage').value=msg; document.getElementById('editPhoto').value=''; document.getElementById('photoHint').textContent=photo?'A photograph is saved for this item. Upload another to replace it.':'Choose a photo for this letter or the final HUBBY page. Photos are stored in this browser.'; document.getElementById('editPreview').textContent=msg; }
+function readPhoto(){return new Promise((resolve,reject)=>{const f=document.getElementById('editPhoto').files[0]; if(!f){resolve(null);return;} if(f.size>1500000){reject(new Error('Please choose an image smaller than 1.5 MB for this browser preview.'));return;} const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(f);});}
+function previewEdit(){document.getElementById('editPreview').textContent=(document.getElementById('editTitle').value?document.getElementById('editTitle').value+'\n\n':'')+document.getElementById('editMessage').value;}
+async function saveEdit(){const t=document.getElementById('editTarget').value;const msg=document.getElementById('editMessage').value;const title=document.getElementById('editTitle').value;try{const photo=await readPhoto();if(t==='opening')data.opening=msg;else if(t==='final')data.final=msg;else{const l=data.letters[Number(t.split('-')[1])];l.title=title||l.title;l.message=msg;if(photo)l.photo=photo;}if(t==='final'&&photo)data.mainPhoto=photo;if(persist()){render();loadEditor();document.getElementById('editPreview').textContent='Saved in this browser. Your changes will remain after refresh on this device.';}}catch(e){alert(e.message||'Could not read that photograph.');}}
+function exportBackup(){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='my-favourite-universe-backup.json';a.click();URL.revokeObjectURL(a.href);}
+function importBackup(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{data=mergeData(JSON.parse(r.result));if(persist()){render();loadEditor();alert('Backup imported and saved in this browser.');}}catch(err){alert('That backup file could not be read.');}};r.readAsText(f);e.target.value='';}
+function resetSite(){if(confirm('Reset all letters, photos and messages to the original defaults?')){data=structuredClone(defaults);persist();render();loadEditor();}}
+function showWish(){const o=document.getElementById('wishOverlay');o.classList.add('show');for(let i=0;i<28;i++){const h=document.createElement('span');h.className='wish-heart';h.textContent=Math.random()>.5?'✦':'♡';h.style.left=Math.random()*100+'%';h.style.bottom='-20px';h.style.fontSize=(12+Math.random()*25)+'px';h.style.animationDelay=(Math.random()*4)+'s';o.appendChild(h);}}
+function closeWish(){const o=document.getElementById('wishOverlay');o.classList.remove('show');o.querySelectorAll('.wish-heart').forEach(x=>x.remove());}
+// Gentle synthesized ambient pad; audio starts only after the visitor presses the music control.
+let audioCtx=null, oscillators=[], musicOn=false;
+function toggleMusic(){const btn=document.getElementById('musicBtn');if(musicOn){oscillators.forEach(o=>{try{o.stop();}catch(e){}});oscillators=[];if(audioCtx)audioCtx.close();audioCtx=null;musicOn=false;btn.textContent='♫ MUSIC: OFF';return;}const AC=window.AudioContext||window.webkitAudioContext;if(!AC){btn.textContent='MUSIC UNAVAILABLE';return;}audioCtx=new AC();[130.81,196,261.63].forEach((hz,i)=>{const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();osc.type='sine';osc.frequency.value=hz;gain.gain.value=[.025,.012,.008][i];osc.connect(gain);gain.connect(audioCtx.destination);osc.start();oscillators.push(osc);});musicOn=true;btn.textContent='♫ MUSIC: ON';}
+document.getElementById('musicBtn').addEventListener('click',toggleMusic);
+// Lightweight star field, seeded once per page load.
+const field=document.getElementById('starfield');for(let i=0;i<145;i++){const s=document.createElement('i');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.opacity=(.2+Math.random()*.8).toFixed(2);s.style.setProperty('--dur',(2+Math.random()*5)+'s');s.style.animationDelay=(-Math.random()*5)+'s';field.appendChild(s);}
+render();
+</script>
+</body>
+</html>
